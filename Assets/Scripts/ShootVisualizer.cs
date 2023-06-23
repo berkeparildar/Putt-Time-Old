@@ -3,47 +3,78 @@ using UnityEngine;
 public class ShootVisualizer : MonoBehaviour
 {
     [SerializeField] private Transform ballTransform;
-    [SerializeField] private float visualizerMaxLength = 1f;
-    [SerializeField] private float visualizerWidth = 0.1f;
-    [SerializeField] private Material visualizerMaterial;
+    [SerializeField] private GameObject arrowPrefab;
+    [SerializeField] private float visualizerMaxLength = 5f;
+    [SerializeField] private float arrowSpacing;
 
     private Vector3 _shootDirection;
     private float _shootForce;
     private GameObject _visualizerObject;
-    private LineRenderer _lineRenderer;
-    // Start is called before the first frame update
+    [SerializeField] private GameObject[] _arrowInstances;
+    
     void Start()
     {
-        _visualizerObject = new GameObject("ShootDirectionVisualier");
-        _lineRenderer = _visualizerObject.AddComponent<LineRenderer>();
-        _lineRenderer.startWidth = visualizerWidth;
-        _lineRenderer.endWidth = visualizerWidth;
-        _lineRenderer.material = visualizerMaterial;
-        _lineRenderer.enabled = false;
+        _visualizerObject = new GameObject("ShootDirectionVisualizer");
     }
 
-    // Update is called once per frame
     void Update()
     {
         _visualizerObject.transform.position = ballTransform.position;
-        _lineRenderer.SetPosition(0, ballTransform.position);
-        _lineRenderer.SetPosition(1, ballTransform.position + _shootDirection * _shootForce);
+        float shootLength = _shootForce * visualizerMaxLength;
+        int arrowCount = Mathf.CeilToInt(shootLength / arrowSpacing);
+        Debug.Log(arrowCount);
+        if (arrowCount != 0)
+        {
+            for (int i = 0; i < _arrowInstances.Length; i++)
+            {
+                if (i < arrowCount)
+                {
+                    if (_arrowInstances[i] == null)
+                    {
+                        _arrowInstances[i] = Instantiate(arrowPrefab, _visualizerObject.transform);
+                    }
+                    _arrowInstances[i].SetActive(true);
+                    _arrowInstances[i].transform.position
+                        = ballTransform.position + _shootDirection * ((i + 1) * arrowSpacing);
+                    _arrowInstances[i].transform.rotation = Quaternion.LookRotation(-_shootDirection);
+                }
+                else
+                {
+                    if (_arrowInstances[i] != null)
+                    {
+                        _arrowInstances[i].SetActive(false);
+                    }
+                }
+            }
+        }
     }
 
     public void SetShootData(Vector3 direction, float force)
     {
         _shootDirection = direction.normalized;
         _shootForce = force;
-        _lineRenderer.enabled = _shootForce > 0;
     }
 
     public void ShowVisualizer()
     {
-        _lineRenderer.enabled = true;
+        var maxArrowCount = Mathf.CeilToInt(visualizerMaxLength / arrowSpacing);
+        _arrowInstances = new GameObject[maxArrowCount];
     }
 
     public void HideVisualizer()
     {
-        _lineRenderer.enabled = false;   
+        // Destroy arrow instances
+        if (_arrowInstances != null)
+        {
+            foreach (var arrow in _arrowInstances)
+            {
+                if (arrow != null)
+                {
+                    _shootForce = 0;
+                    Debug.Log("should destroy?");
+                    Destroy(arrow.gameObject);
+                }
+            }
+        }
     }
 }

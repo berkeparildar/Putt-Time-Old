@@ -6,7 +6,7 @@ public class PlayerAction : MonoBehaviour
     [SerializeField] private ShootVisualizer directionVisualizer;
     [SerializeField] private GameObject cameraPoint;
     
-    private bool _isShooting = false;
+    private bool _isShooting;
     private Vector3 _shootDirection;
     private float _shootPower;  
     private Rigidbody _ballRb;
@@ -53,7 +53,6 @@ public class PlayerAction : MonoBehaviour
         {
             Plane plane = new Plane(Vector3.up, transform.position);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
             CalculateShootMultiplier();
             float hitDistance;
             if (plane.Raycast(ray, out hitDistance))
@@ -68,7 +67,7 @@ public class PlayerAction : MonoBehaviour
     private void CalculateShootMultiplier()
     {
         float dragDistance = Vector3.Distance(_initialMousePosition, Input.mousePosition);
-        _shootPower = Mathf.Clamp(dragDistance / 10 , 0, 10);
+        _shootPower = Mathf.Clamp(dragDistance / 25 , 0, 10);
     }
 
     private void ShootBall()

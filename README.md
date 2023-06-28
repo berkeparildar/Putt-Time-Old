@@ -15,6 +15,7 @@ Putt Time is a 3D singleplayer golf game heavily inspired by Discord's Putt Part
 - Jump Mechanic: On certain holes, you'll encounter special platforms that can launch your ball into the air. Utilize the jump mechanic by shooting towards the jump pads with the correct amount of power to pass the gaps in the courses.
 <br>
 <img src="screenshots/jump.gif" alt="Gameplay Screenshot" width="300" height="150">
+
 - Score: Your score is determined by the number of shots it takes you to complete each hole. Strive for a low score and aim to get a hole-in-one whenever possible.
 
 ![Gameplay Screenshot](screenshots/0.png)

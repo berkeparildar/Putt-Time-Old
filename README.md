@@ -1,3 +1,5 @@
+# This is the old version of this game, check out the new version with multiplayer functionality! https://github.com/berkeparildar/Putt-Time
+
 # Putt Time
 
 Putt Time is a 3D singleplayer golf game heavily inspired by Discord's Putt Party. This game tests your precision and skill in four different courses, each with its own unique layout and obstacles.
